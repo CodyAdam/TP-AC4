@@ -54,7 +54,12 @@ public class Client_Sac_A_Dos {
 		 * de nbr_indiv individus associés au problème
 		 * du sac à dos considéré
 		 */
-		// TODO
+
+		Individu_SAD[] individus = new Individu_SAD[nbr_indiv];
+		for (int i = 0; i < nbr_indiv; i++) {
+			individus[i] = (new Individu_SAD(nbr_objets, capacite, poids));
+		}
+		Population<Individu_SAD> pop = new Population<Individu_SAD>(individus);
 
 		/*
 		 * on génére les générations successives
@@ -64,7 +69,16 @@ public class Client_Sac_A_Dos {
 		 * (paramètre) d'itérations
 		 * le résultat est alors donné par l'individu maximal de la dernière génération
 		 */
-		// TODO
-
+		int iter = 0;
+		int max_iter = 1000;
+		while (pop.adaptation_maximale() != capacite && iter <= max_iter) {
+			iter++;
+			pop.reproduction(prob_mut);
+		}
+		System.out.println("Nombre d'itérations : " + iter);
+		System.out.println("Adaptation moyenne : " + pop.adaptation_moyenne());
+		System.out.println("Adaptation maximale : " + pop.adaptation_maximale());
+		System.out.println("Individu maximal : " + pop.individu_maximal());
+		System.out.println("Individu maximal object : " + pop.individu_maximal().getObjectTakenBinary());
 	}
 }

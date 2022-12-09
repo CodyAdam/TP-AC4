@@ -11,17 +11,19 @@ public class Individu_SAD implements Individu {
   public Individu_SAD(int capacity, double[] weights) {
     this.objectTakenBinary = (int) (Math.random() * Math.pow(2, weights.length));
     this.capacity = capacity;
+    this.weights = weights;
   }
 
   public Individu_SAD(int objectTakenBinary, int capacity, double[] weights) {
     this.objectTakenBinary = objectTakenBinary;
     this.capacity = capacity;
+    this.weights = weights;
   }
 
   @Override
   public double adaptation() {
     double sumWeights = 0;
-    for (int i = 0; i < this.objectTakenBinary; i++) {
+    for (int i = 0; i < this.weights.length; i++) {
       if ((this.objectTakenBinary & (1 << i)) != 0) {
         sumWeights += this.weights[i];
       }
@@ -48,7 +50,7 @@ public class Individu_SAD implements Individu {
 
   @Override
   public void mutation(double prob) {
-    for (int i = 0; i < this.objectTakenBinary; i++) {
+    for (int i = 0; i < this.weights.length; i++) {
       if (Math.random() < prob) {
         // flip the bit at index i
         this.objectTakenBinary ^= (1 << i);

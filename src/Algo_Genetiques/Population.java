@@ -23,11 +23,11 @@ public class Population<Indiv extends Individu> {
 	 *                     avoir à la recalculer)
 	 * @return indice de l'individu sélectionné
 	 * 
-	 * exemple de sélection par roulette :
-	 * 	                                                         rand              adapt_totale
-	 * |---------------|-------|-------|-------|---------------|---|---|-------|-------|
-	 * |               |       |       |       |               |   |   |       |       
-	 * 0			         1       2       3       4               5   |   6       7       
+	 *         exemple de sélection par roulette :
+	 *         rand adapt_totale
+	 *         |---------------|-------|-------|-------|---------------|---|---|-------|-------|
+	 *         | | | | | | | | |
+	 *         0 1 2 3 4 5 | 6 7
 	 * 
 	 */
 	public int selection(double adapt_totale) {
@@ -39,10 +39,8 @@ public class Population<Indiv extends Individu> {
 				return i;
 			}
 		}
-		return population.size()-1;
+		return population.size() - 1;
 	}
-
-
 
 	/**
 	 * remplace la génération par la suivante
@@ -57,22 +55,33 @@ public class Population<Indiv extends Individu> {
 		List<Indiv> new_generation = new ArrayList<Indiv>();
 
 		/* élitisme */
-		// TODO (dans un second temps)
+		new_generation.add(individu_maximal());
 
 		// tant qu'on n'a pas le bon nombre
 		while (new_generation.size() < population.size()) {
 			// on sélectionne les parents
-			// TODO
+
+			double adapt_totale = 0;
+			for (Indiv i : population) {
+				adapt_totale += i.adaptation();
+			}
+			Indiv parent1 = population.get(selection(adapt_totale));
+			Indiv parent2 = population.get(selection(adapt_totale));
 
 			// ils se reproduisent
-			// TODO
+			Indiv[] childs = (Indiv[]) parent1.croisement(parent2);
+			Indiv child1 = childs[0];
+			Indiv child2 = childs[1];
 
 			// on les ajoute à la nouvelle génération
-			// TODO
+			new_generation.add(child1);
+			new_generation.add(child2);
 		}
 
 		// on applique une éventuelle mutation à toute la nouvelle génération
-		// TODO
+		for (Indiv i : new_generation) {
+			i.mutation(prob_mut);
+		}
 
 		// on remplace l'ancienne par la nouvelle
 		population = new_generation;
@@ -82,23 +91,37 @@ public class Population<Indiv extends Individu> {
 	 * renvoie l'individu de la population ayant l'adaptation maximale
 	 */
 	public Indiv individu_maximal() {
-		// TODO
-		return null;
+		Indiv master = population.get(0);
+		for (Indiv i : population) {
+			if (i.adaptation() > master.adaptation()) {
+				master = i;
+			}
+		}
+		return master;
 	}
 
 	/**
 	 * renvoie l'adaptation moyenne de la population
 	 */
 	public double adaptation_moyenne() {
-		// TODO
-		return -1;
+		double avgRate = 0;
+		for (Indiv i : population) {
+			avgRate = avgRate + i.adaptation();
+		}
+		avgRate = avgRate / (double) population.size();
+		return avgRate;
 	}
 
 	/**
 	 * renvoie l'adaptation maximale de la population
 	 */
 	public double adaptation_maximale() {
-		// TODO
-		return -1;
+		double max = 0;
+		for (Indiv i : population) {
+			if (i.adaptation() > max) {
+				max = i.adaptation();
+			}
+		}
+		return max;
 	}
 }
