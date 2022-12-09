@@ -149,7 +149,7 @@ class Canvas_VDC extends Canvas {
 
 		// Distance totale
 		g.setColor(Color.black);
-		g.drawString("d = " + distance, 5, iMaxY);
+		g.drawString("d = " + distance, 5, iMaxY - 20);
 	}
 
 	/*

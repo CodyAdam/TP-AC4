@@ -34,7 +34,7 @@ public class Client_Voyageur_De_Commerce {
 		/*
 		 * on initialise les coordonnées des villes en les lisant ds un fichier
 		 */
-
+		double prob_mut = 0.5;
 		int nbr_villes = 16;
 		double[] coord_x = new double[nbr_villes];
 		double[] coord_y = new double[nbr_villes];
@@ -44,10 +44,22 @@ public class Client_Voyageur_De_Commerce {
 		 * Exemple d'utilisation de Display_VDCC (il faut d'abord faire le constructeur
 		 * pour ce test fonctionne, ainsi que compléter les accesseurs)
 		 */
-		Individu_VDC ind1 = new Individu_VDC(coord_x, coord_y); // on crée un individu aléatoire
-		Display_VDC disp = new Display_VDC(ind1); // on l'affiche
-		Thread.sleep(1000); // pause de 1 seconde (pour avoir le temps de voir le premier affichage)
-		Individu_VDC ind2 = new Individu_VDC(coord_x, coord_y); // on en crée un autre
-		disp.refresh(ind2); // on met à jour l'affichage avec le nouveau
+
+		Individu_VDC[] individus = new Individu_VDC[nbr_villes];
+		for (int i = 0; i < nbr_villes; i++) {
+			individus[i] = (new Individu_VDC(coord_x, coord_y));
+		}
+		Population<Individu_VDC> pop = new Population<Individu_VDC>(individus);
+
+		Display_VDC disp = new Display_VDC(pop.individu_maximal()); // on l'affiche
+		int iter = 0;
+		int max_iter = 1000;
+		while (iter <= max_iter) {
+			iter++;
+			pop.reproduction(prob_mut);
+			Thread.sleep(100); // pause de 1 seconde (pour avoir le temps de voir le premier affichage)
+			disp.refresh(pop.individu_maximal()); // on met à jour l'affichage avec le nouveau
+		}
+
 	}
 }
