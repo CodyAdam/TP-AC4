@@ -6,21 +6,30 @@ public class Individu_SAD implements Individu {
   // 0 = non pris, 1 = pris
   private int objectTakenBinary;
   private int capacity;
+  private double[] weights;
 
-  public Individu_SAD(int numberOfObject, int capacity) {
-    this.objectTakenBinary = (int) (Math.random() * Math.pow(2, numberOfObject));
+  public Individu_SAD(int capacity, double[] weights) {
+    this.objectTakenBinary = (int) (Math.random() * Math.pow(2, weights.length));
     this.capacity = capacity;
   }
 
-  public Individu_SAD(int objectTakenBinary, int numberOfObject, int capacity) {
+  public Individu_SAD(int objectTakenBinary, int capacity, double[] weights) {
     this.objectTakenBinary = objectTakenBinary;
     this.capacity = capacity;
   }
 
   @Override
   public double adaptation() {
-    // TODO Auto-generated method stub
-    return 0;
+    double sumWeights = 0;
+    for (int i = 0; i < this.objectTakenBinary; i++) {
+      if ((this.objectTakenBinary & (1 << i)) != 0) {
+        sumWeights += this.weights[i];
+      }
+    }
+    if (sumWeights > this.capacity) {
+      return this.capacity - 2 * (sumWeights - this.capacity);
+    }
+    return sumWeights;
   }
 
   @Override
@@ -33,8 +42,8 @@ public class Individu_SAD implements Individu {
     int mask = (int) (Math.pow(2, indexOfCrossOver) - 1);
     int child1 = (this.objectTakenBinary & mask) | (conjointSAD.getObjectTakenBinary() & ~mask);
     int child2 = (conjointSAD.getObjectTakenBinary() & mask) | (this.objectTakenBinary & ~mask);
-    return new Individu[] { new Individu_SAD(child1, this.objectTakenBinary, this.capacity),
-        new Individu_SAD(child2, this.objectTakenBinary, this.capacity) };
+    return new Individu[] { new Individu_SAD(child1, this.capacity, this.weights),
+        new Individu_SAD(child2, this.capacity, this.weights) };
   }
 
   @Override
@@ -53,5 +62,9 @@ public class Individu_SAD implements Individu {
 
   public int getObjectTakenBinary() {
     return objectTakenBinary;
+  }
+
+  public double[] getWeights() {
+    return weights;
   }
 }
