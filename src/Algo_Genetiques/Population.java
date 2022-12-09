@@ -22,11 +22,27 @@ public class Population<Indiv extends Individu> {
 	 * @param adapt_totale somme des adaptations de tous les individus (pour ne pas
 	 *                     avoir à la recalculer)
 	 * @return indice de l'individu sélectionné
+	 * 
+	 * exemple de sélection par roulette :
+	 * 	                                                         rand              adapt_totale
+	 * |---------------|-------|-------|-------|---------------|---|---|-------|-------|
+	 * |               |       |       |       |               |   |   |       |       
+	 * 0			         1       2       3       4               5   |   6       7       
+	 * 
 	 */
 	public int selection(double adapt_totale) {
-		// TODO
-		return -1;
+		double randomMaxedByAdapt = Math.random() * adapt_totale;
+		double sum = 0;
+		for (int i = 0; i < population.size(); i++) {
+			sum += population.get(i).adaptation();
+			if (sum >= randomMaxedByAdapt) {
+				return i;
+			}
+		}
+		return population.size()-1;
 	}
+
+
 
 	/**
 	 * remplace la génération par la suivante
