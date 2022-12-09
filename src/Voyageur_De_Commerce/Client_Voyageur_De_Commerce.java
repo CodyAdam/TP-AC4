@@ -34,8 +34,8 @@ public class Client_Voyageur_De_Commerce {
 		/*
 		 * on initialise les coordonnées des villes en les lisant ds un fichier
 		 */
-		double prob_mut = 0.5;
-		int nbr_villes = 16;
+		int nbr_villes = 250;
+		double prob_mut = 0.001;
 		double[] coord_x = new double[nbr_villes];
 		double[] coord_y = new double[nbr_villes];
 		charge_coords("data_vdc/" + nbr_villes + "coords.txt", nbr_villes, coord_x, coord_y);
@@ -53,12 +53,15 @@ public class Client_Voyageur_De_Commerce {
 
 		Display_VDC disp = new Display_VDC(pop.individu_maximal()); // on l'affiche
 		int iter = 0;
-		int max_iter = 1000;
+		int max_iter = 5000;
 		while (iter <= max_iter) {
 			iter++;
 			pop.reproduction(prob_mut);
-			Thread.sleep(100); // pause de 1 seconde (pour avoir le temps de voir le premier affichage)
-			disp.refresh(pop.individu_maximal()); // on met à jour l'affichage avec le nouveau
+			if (iter % 10 == 0) {
+				Thread.sleep(100); // pause de 1 seconde (pour avoir le temps de voir le premier affichage)
+				System.out.println(iter + " " + pop.adaptation_maximale());
+				disp.refresh(pop.individu_maximal()); // on met à jour l'affichage avec le nouveau
+			}
 		}
 
 	}
