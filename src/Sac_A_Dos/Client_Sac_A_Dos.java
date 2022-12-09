@@ -35,17 +35,17 @@ public class Client_Sac_A_Dos {
 
 		/* paramètres */
 		int nbr_indiv = 100;
-		double prob_mut = 0.1;
+		double prob_mut = 0.01;
 
 		/*
 		 * On initialise les poids en lisant un fichier
 		 */
 
-		int nbr_objets = 28;
-		int capacite = 1581;
+		// int nbr_objets = 28;
+		// int capacite = 1581;
 
-		// int nbr_objets=70;
-		// int capacite=350;
+		int nbr_objets = 70;
+		int capacite = 350;
 
 		double[] poids = charge_poids("./data_sad/nbrobj" + nbr_objets + "_capacite" + capacite + ".txt", nbr_objets);
 
@@ -70,15 +70,14 @@ public class Client_Sac_A_Dos {
 		 * le résultat est alors donné par l'individu maximal de la dernière génération
 		 */
 		int iter = 0;
-		int max_iter = 1000;
+		int max_iter = 500;
 		while (pop.adaptation_maximale() != capacite && iter <= max_iter) {
 			iter++;
 			pop.reproduction(prob_mut);
+			System.out.println(pop.adaptation_maximale());
 		}
 		System.out.println("Nombre d'itérations : " + iter);
 		System.out.println("Adaptation moyenne : " + pop.adaptation_moyenne());
 		System.out.println("Adaptation maximale : " + pop.adaptation_maximale());
-		System.out.println("Individu maximal : " + pop.individu_maximal());
-		System.out.println("Individu maximal object : " + pop.individu_maximal().getObjectTakenBinary());
 	}
 }

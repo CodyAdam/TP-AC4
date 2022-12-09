@@ -48,10 +48,11 @@ public class Individu_VDC implements Individu {
 
 	public double calculer_adaptation() {
 		double sum = 0;
-		// Pas de retour au parcout initial
+		// Avec un retour à la ville de départ
 		for (int i = 0; i < parcours.length - 1; i++) {
 			sum += distance(parcours[i], parcours[i + 1]);
 		}
+		sum += distance(parcours[parcours.length - 1], parcours[0]);
 		double fit = 100 / sum;
 		fitness = fit;
 		return fit;
